@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Signin from '@/components/Signin'
 import Signup from '@/components/Signup'
 import Projects from '@/components/projects/Projects.vue'
+import Project from '@/components/projects/Project.vue'
 
 Vue.use(Router)
 
@@ -22,6 +23,10 @@ export default new Router({
       path: '/projects',
       name: 'Projects',
       component: Projects
+    },
+    {
+      path: '/projects/:id',
+      component: Project
     }
   ]
 })
