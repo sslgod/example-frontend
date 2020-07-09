@@ -1,38 +1,134 @@
 <template>
-<div class="max-w-sm w-full lg:max-w-full lg:flex">
-  <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('/img/card-left.jpg')" title="Woman holding a mug">
-  </div>
-  <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
-    <div class="mb-8">
-      <p class="text-sm text-gray-600 flex items-center">
-        <svg class="fill-current text-gray-500 w-3 h-3 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-          <path d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z" />
-        </svg>
-        Members only
-      </p>
-      <div class="text-gray-900 font-bold text-xl mb-2">Can coffee make you a better developer?</div>
-      <p class="text-gray-700 text-base">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.</p>
-    </div>
-    <div class="flex items-center">
-      <img class="w-10 h-10 rounded-full mr-4" src="/img/jonathan.jpg" alt="Avatar of Jonathan Reinink">
-      <div class="text-sm">
-        <p class="text-gray-900 leading-none">Jonathan Reinink</p>
-        <p class="text-gray-600">Aug 18</p>
+<div class=" py-10">
+  <main class="flex flex-col flex-grow overflow-hidden">
+    <div class="container mx-auto">
+      <div class="flex items-center my-4">
+            <div class="flex sm:w-2/3">
+                <div class="flex flex-col leading-tight">
+                    <h1 class="text-3xl text-secondary font-bold mb-1">
+                        {{ project.name }}
+                                            </h1>
+                    <span class="text-gray-600">
+                      By <a rel="nofollow">{{project.user.email}}</a>
+                    </span>
+                    <p class="text-gray-700 mt-3 leading-snug links-colored">{{project.description}}</p>
+                </div>
+            </div>
+          </div>
+        </div>
+    <div class="container mx-auto ">
+      <div class="flex items-center  my-4">
+        <div class="flex">
+          <div class="flex flex-col leading-tight">
+            <h2 class="w-auto text-2xl text-secondary font-bold mb-1">
+              Финансы
+              <button @click.prevent="addTransaction()">
+                <ButtonCircleAdd/>
+              </button>
+            </h2>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+    <div class="container mx-auto ">
+      <div class="flex items-center   my-4">
+        <div class="flex w-full  flex-col">
+          <h2 class="text-2xl text-secondary font-bold mb-1">
+              Этапы
+            <button @click.prevent="addSegment()">
+              <ButtonCircleAdd/>
+            </button>
+          </h2>
+          <div v-if="newSegment != ''" class="pt-2">
+            <form action="" @submit.prevent="createSegment(newSegment)">
+              <div class="flex flex-wrap  mb-6">
+                <div class="w-full md:w-1/6  mb-6 md:mb-0">
+                  <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                    Название
+                  </label>
+                  
+                  <input v-model="newSegment.name" class="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white" id="grid-first-name" type="text" placeholder="Дизайн">
+                </div>
+                <div class="w-full md:w-2/6 px-3">
+                  <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                    Продолжительность
+                  </label>
+                  <date-picker v-model="newSegment.started_date" range inputClass="w-full appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white" valueType="format"></date-picker>
+                </div>
+                <input type="submit" value="Сохранить" class=" mb-3 mt-6 bg-transparent text-sm hover:bg-blue hover:text-white hover:bg-gray-700 text-blue border border-blue no-underline font-bold px-4 rounded cursor-pointer">
+              </div>
+            </form>
+          </div>
+          <ul class="list-reset mt-4">
+            <li  v-for="segment in project.segments" :key="segment.id" :segment="segment">
+              <div class="flex items-center justify-between flex-wrap">
+                <p class="block flex-1 font-mono font-semibold flex items-center ">
+                <a>- {{ segment.name }}</a>
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
 </template>
 <script>
+
+import ButtonCircleAdd from '../shared/ButtonCircleAdd.vue'
+  import DatePicker from 'vue2-datepicker';
+  import 'vue2-datepicker/index.css';
+
+
 export default {
   name: 'Project',
   data () {
     return {
-      projects: [],
-      newProject: [],
-      error: '',
-      editedProject: ''
+      time1: null,
+      project: {},
+      newSegment: {},
+      error: ''
+    }
+  },
+  created () {
+    if (!localStorage.signedIn) {
+      this.$router.replace('/')
+    } else {
+      this.$http.secured.get('/api/v1/projects/'+ this.$route.params.id )
+        .then(response => { this.project = response.data })
+        .catch(error => this.setError(error, 'Something went wrong'))
+    }
+  },
+  components: {
+    ButtonCircleAdd,
+    DatePicker
+  },
+  methods: {
+    setError (error, text) {
+      this.error = (error.response && error.response.data && error.response.data.error) || text
+    },
+    addSegment(){
+      this.newSegment = {}
+    },
+    createSegment(){
+      const value = this.newSegment
+      if (!value) {
+        return
+      }
+      this.$http.secured.post('/api/v1/projects/' + this.project.id +'/segments/', { segment: { name: this.newSegment.name } })
+
+        .then(response => {
+          this.project.segments.push(response.data)
+          this.newSegment = ''
+        })
+        .catch(error => this.setError(error, 'Cannot create project'))
     }
   }
 }
 </script>
+<style>
+.mx-datepicker-range {
+    width: 100%;
+}
+</style>

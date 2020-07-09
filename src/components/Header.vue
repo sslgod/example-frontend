@@ -7,10 +7,10 @@
         <a href="/" class="uppercase text-sm font-mono pl-4 font-semibold no-underline text-indigo-dark hover:text-indigo-darker">Учетка</a>
       </div>
       <div>
-        <router-link to="/" class="link-grey px-2 no-underline" v-if="!signedIn()">Sign in</router-link>
-        <router-link to="/signup" class="link-grey px-2 no-underline" v-if="!signedIn()">Sign Up</router-link>
-        <router-link to="/projects" class="link-grey px-2 no-underline" v-if="signedIn()">Projects</router-link>
-        <a href="#" @click.prevent="signOut" class="link-grey px-2 no-underline" v-if="signedIn()">Sign out</a>
+        <router-link to="/" class="link-grey px-2 no-underline" v-if="!signedIn()">Войти</router-link>
+        <router-link to="/signup" class="link-grey px-2 no-underline" v-if="!signedIn()">Зарегистрироваться</router-link>
+        <router-link to="/projects" class="link-grey px-2 no-underline" v-if="signedIn()">Проекты</router-link>
+        <a href="#" @click.prevent="signOut" class="link-grey px-2 no-underline" v-if="signedIn()">Выйти</a>
       </div>
     </div>
   </header>

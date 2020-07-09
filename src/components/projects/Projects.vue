@@ -2,15 +2,19 @@
 <template>
   <div class="max-w-md m-auto py-10">
     <div class="text-red" v-if="error">{{ error }}</div>
-    <h3 class="font-mono font-regular text-3xl mb-4">Add a new project</h3>
-    <form action="" @submit.prevent="addProject">
-      <div class="mb-6">
-        <input class="input"
-          autofocus autocomplete="off"
-          placeholder="Project name"
-          v-model="newProject.name" />
-      </div>
-      <input type="submit" value="Add Project" class="font-sans font-bold px-4 rounded cursor-pointer no-underline bg-gray-500 hover:bg-gray-700 block w-full py-4 text-white items-center justify-center" />
+    <h3 class="font-mono font-regular text-3xl mb-4">Новый проект</h3>
+    <form class="mb-6 p-4 pr-8 bg-white rounded border border-grey-light mt-4" action="" @submit.prevent="addProject">
+      <input class="shadow appearance-none  mb-2 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+        autofocus autocomplete="off"
+        placeholder="Название проекта"
+        v-model="newProject.name" />
+      
+      <input class="shadow appearance-none  mb-2 pb-8 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+        autofocus autocomplete="off"
+        type="text"
+        placeholder="Краткое описание"
+        v-model="newProject.description" />
+      <input type="submit" value="Создать" class="font-sans font-bold px-4 rounded cursor-pointer no-underline bg-gray-500 hover:bg-gray-700 block w-full py-4 text-white items-center justify-center" />
     </form>
 
     <hr class="border border-grey-light my-6" />
@@ -20,21 +24,29 @@
 
         <div class="flex items-center justify-between flex-wrap">
           <p class="block flex-1 font-mono font-semibold flex items-center ">
-            {{ project.name }}
+          <router-link :to="{ name: 'Project', params: { id: project.id }}">{{ project.name }}</router-link>
           </p>
 
           <button class="bg-tranparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded"
-          @click.prevent="editProject(project)">Edit</button>
+          @click.prevent="editProject(project)">Редактировать</button>
 
           <button class="bg-transprent text-sm hover:bg-red text-red hover:text-white no-underline font-bold py-2 px-4 rounded border border-red"
-         @click.prevent="removeProject(project)">Delete</button>
+         @click.prevent="removeProject(project)">Удалить</button>
         </div>
 
         <div v-if="project == editedProject">
           <form action="" @submit.prevent="updateProject(project)">
             <div class="mb-6 p-4 bg-white rounded border border-grey-light mt-4">
-              <input class="input" v-model="project.name" />
-              <input type="submit" value="Update" class=" my-2 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 rounded cursor-pointer">
+             <input class="shadow appearance-none  mb-2 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+              autofocus autocomplete="off"
+              placeholder="Название проекта"
+              v-model="project.name" />
+             <input class="shadow appearance-none  mb-2 pb-8 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+                autofocus autocomplete="off"
+                type="text"
+                placeholder="Краткое описание"
+                v-model="project.description" />
+              <input type="submit" value="Сохранить" class=" my-2 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 rounded cursor-pointer">
             </div>
           </form>
         </div>
