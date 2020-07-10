@@ -59,6 +59,7 @@
               </div>
             </form>
           </div>
+          <Chart/>
           <ul class="list-reset mt-4">
             <li  v-for="segment in project.segments" :key="segment.id" :segment="segment">
               <div class="flex items-center justify-between flex-wrap">
@@ -76,7 +77,8 @@
 </template>
 <script>
 
-import ButtonCircleAdd from '../shared/ButtonCircleAdd.vue'
+  import ButtonCircleAdd from '../shared/ButtonCircleAdd.vue'
+  import Chart from './project/Chart.vue'
   import DatePicker from 'vue2-datepicker';
   import 'vue2-datepicker/index.css';
 
@@ -102,7 +104,8 @@ export default {
   },
   components: {
     ButtonCircleAdd,
-    DatePicker
+    DatePicker,
+    Chart
   },
   methods: {
     setError (error, text) {
