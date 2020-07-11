@@ -20,7 +20,9 @@ import JSCharting from 'jscharting-vue';
 export default {
   name: 'Chart',
   data () {
+    
     return {
+      props: ['segments'],
       options: {
         debug: true,
         /*Typical Gantt setup. Horizontal columns by default.*/
@@ -68,8 +70,9 @@ export default {
             outline: { color: 'darkenMore', width: 3 }
           }
         },
+        
         series: [
-          {
+          { 
             name: 'Initiate Project',
             points: [
               {
@@ -154,7 +157,9 @@ export default {
       },
     }
   },
-  
+  created (){
+        console.log(this.props)
+  },
   components: {
     JSCharting
   }
