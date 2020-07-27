@@ -18,9 +18,29 @@
 import JSCharting from 'jscharting-vue';
 
 export default {
+  
   name: 'Chart',
   data () {
-    
+    console.log();
+    function toPoints(segment) {
+      var points = [{ 
+        name: segment.name,
+        y: ['2/15/2020', '3/15/2020']
+      }]
+      if(segment.children){
+        points.concat[ segment.children.flatMap(s => [toPoints(s) ]) ]
+      }
+      return points
+    }
+    var segments = this.$attrs.project.segments
+    var series = segments.flatMap(segment => [
+      { 
+        
+        name: segment.name, 
+        points: toPoints(segment)
+      }
+    ])
+
     return {
       props: ['segments'],
       options: {
@@ -51,7 +71,6 @@ export default {
         },
         defaultSeries: {
           defaultPoint: {
-            visible: false,
             legendEntry: {
               value: '{days(%max-%min):number n0} days'
             },
@@ -71,89 +90,8 @@ export default {
           }
         },
         
-        series: [
-          { 
-            name: 'Initiate Project',
-            points: [
-              {
-                name: 'Initiate Project',
-                y: ['1/1/2020', '3/15/2020']
-              },
-              {
-                name: 'Project Assignments',
-                y: ['1/1/2020', '1/25/2020']
-              },
-              {
-                name: 'Outlines/Scope',
-                y: ['1/25/2020', '2/15/2020']
-              },
-              {
-                name: 'Business Alignment',
-                y: ['2/15/2020', '3/15/2020']
-              }
-            ]
-          },
-          {
-            name: 'Plan Project',
-            points: [
-              {
-                name: 'Plan Project',
-                y: ['3/15/2020', '5/20/2020']
-              },
-              {
-                name: 'Determine Process',
-                y: ['3/15/2020', '4/12/2020']
-              },
-              {
-                name: 'Design Lyouts',
-                y: ['4/12/2020', '5/8/2020']
-              },
-              {
-                name: 'Design Structure',
-                y: ['5/8/2020', '5/20/2020']
-              }
-            ]
-          },
-          {
-            name: 'Implement Project',
-            points: [
-              {
-                name: 'Implement Project',
-                y: ['5/20/2020', '7/28/2020']
-              },
-              {
-                name: 'Designs',
-                y: ['5/20/2020', '6/10/2020']
-              },
-              {
-                name: 'Structures',
-                y: ['6/10/2020', '6/15/2020']
-              },
-              {
-                name: 'D&S Integration',
-                y: ['6/15/2020', '7/28/2020']
-              }
-            ]
-          },
-          {
-            name: 'Board Review',
-            type: 'marker',
-            legendEntry_value: '',
-            defaultPoint: {
-              tooltip: '%name Meeting Milestone'
-            },
-            points: [
-              {
-                name: 'Plan Project',
-                y: '5/20/2020'
-              },
-              {
-                name: 'Implement Project',
-                y: '7/28/2020'
-              }
-            ]
-          }
-        ]
+        series: series
+        
       },
     }
   },
@@ -164,7 +102,4 @@ export default {
     JSCharting
   }
 }
-
-
-
 </script>
