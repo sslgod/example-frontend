@@ -22,20 +22,28 @@ export default {
   name: 'Chart',
   data () {
     console.log();
-    function toPoints(segment) {
-      var points = [{ 
-        name: segment.name,
-        y: ['2/15/2020', '3/15/2020']
-      }]
+    function toPoints(segment, parent) {
+      if(segment.parent_id == undefined){
+        var points = [{ 
+          name: segment.name,
+          y: ['2/15/2020', '3/15/2020']
+        }]
+      }else{
+        var points = [{ 
+          name: parent.name,
+          y: ['2/25/2020', '2/26/2020']
+        }]
+      }
+      
       if(segment.children){
         points.concat[ segment.children.flatMap(s => [toPoints(s) ]) ]
       }
       return points
     }
-    var segments = this.$attrs.project.segments
+    var project =  this.$attrs.project
+    var segments = project.segments
     var series = segments.flatMap(segment => [
       { 
-        
         name: segment.name, 
         points: toPoints(segment)
       }
