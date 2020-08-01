@@ -15,36 +15,37 @@
 </div>
 </template>
 <script>
-import JSCharting from 'jscharting-vue';
+import JSCharting from 'jscharting-vue'
 
 export default {
-  
+
   name: 'Chart',
   data () {
-    console.log();
-    function toPoints(segment, parent) {
-      if(segment.parent_id == undefined){
-        var points = [{ 
+    console.log()
+    function toPoints (segment, parent) {
+      var points = []
+      if (segment.parent_id === undefined) {
+        points = [{
           name: segment.name,
           y: ['2/15/2020', '3/15/2020']
         }]
-      }else{
-        var points = [{ 
+      } else {
+        points = [{
           name: parent.name,
           y: ['2/25/2020', '2/26/2020']
         }]
       }
-      
-      if(segment.children){
-        points.concat[ segment.children.flatMap(s => [toPoints(s) ]) ]
+
+      if (segment.children) {
+        points.concat([ segment.children.flatMap(s => [ toPoints(s) ]) ])
       }
       return points
     }
-    var project =  this.$attrs.project
+    var project = this.$attrs.project
     var segments = project.segments
     var series = segments.flatMap(segment => [
-      { 
-        name: segment.name, 
+      {
+        name: segment.name,
         points: toPoints(segment)
       }
     ])
@@ -53,16 +54,12 @@ export default {
       props: ['segments'],
       options: {
         debug: true,
-        /*Typical Gantt setup. Horizontal columns by default.*/
         type: 'horizontal column',
-        /*Make columns overlap.*/
         zAxisScaleType: 'stacked',
-        /*Time Y Axis.*/
         yAxis_scale_type: 'time',
         legend_position: 'bottom',
         title_label_text:
           'Project Beta from %min to %max',
-        
         yAxis: {
           markers: [
             {
@@ -97,15 +94,14 @@ export default {
             outline: { color: 'darkenMore', width: 3 }
           }
         },
-        
         series: series
-        
-      },
+      }
     }
   },
-  created (){
-        console.log(this.props)
+  created () {
+    console.log(this.props)
   },
+
   components: {
     JSCharting
   }

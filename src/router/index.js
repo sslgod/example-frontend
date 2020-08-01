@@ -10,25 +10,25 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: "/",
-      name: "Signin",
-      component: Signin,
+      path: '/',
+      name: 'Signin',
+      component: Signin
     },
     {
-      path: "/signup",
-      name: "Signup",
-      component: Signup,
+      path: '/signup',
+      name: 'Signup',
+      component: Signup
     },
     {
-      path: "/projects",
-      name: "Projects",
-      component: Projects,
+      path: '/projects',
+      name: 'Projects',
+      component: Projects
     },
     {
-      path: "/projects/:id",
-      name: "Project",
+      path: '/projects/:id',
+      name: 'Project',
       component: Project,
-      props: true,
-    },
-  ],
-});
+      props: true
+    }
+  ]
+})
