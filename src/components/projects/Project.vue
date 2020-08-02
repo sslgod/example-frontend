@@ -23,7 +23,7 @@
               Финансы
           </h2>
           <div  class="pt-2">
-            <NewTransactionForm  />
+            <NewTransactionForm :project="project"/>
           </div>
         </div>
       </div>
