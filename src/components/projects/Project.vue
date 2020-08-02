@@ -17,15 +17,13 @@
           </div>
         </div>
     <div class="container mx-auto ">
-      <div class="flex items-center  my-4">
-        <div class="flex">
-          <div class="flex flex-col leading-tight">
-            <h2 class="w-auto text-2xl text-secondary font-bold mb-1">
+      <div class="flex items-center   my-4">
+        <div class="flex w-full  flex-col">
+          <h2 class="text-2xl text-secondary font-bold mb-1">
               Финансы
-              <button @click.prevent="addTransaction()">
-                <ButtonCircleAdd/>
-              </button>
-            </h2>
+          </h2>
+          <div  class="pt-2">
+            <NewTransactionForm  />
           </div>
         </div>
       </div>
@@ -35,11 +33,10 @@
         <div class="flex w-full  flex-col">
           <h2 class="text-2xl text-secondary font-bold mb-1">
             Этапы
-            <button @click.prevent="addSegment()">
-              <ButtonCircleAdd/>
-            </button>
+           
           </h2>
           <div  class="pt-2">
+            <NewSegmentForm  />
           </div>
           <Chart :project="project" />
           <ul class="list-reset mt-4">
@@ -58,18 +55,15 @@
 </div>
 </template>
 <script>
-import ButtonCircleAdd from '../shared/ButtonCircleAdd.vue'
 import Chart from './project/Chart.vue'
-import DatePicker from 'vue2-datepicker'
-import 'vue2-datepicker/index.css'
+import NewSegmentForm from './project/NewSegmentForm.vue'
+import NewTransactionForm from './project/NewTransactionForm.vue'
 
 export default {
   name: 'Project',
   data () {
     return {
-      time1: null,
       project: {},
-      newSegment: {},
       error: ''
     }
   },
@@ -78,33 +72,20 @@ export default {
       this.$router.replace('/')
     } else {
       this.$http.secured.get('/api/v1/projects/' + this.$route.params.id)
-        .then(response => { this.project = response.data })
+        .then(response => {
+           this.project = response.data
+        })
         .catch(error => this.setError(error, 'Something went wrong'))
     }
   },
   components: {
-    ButtonCircleAdd,
-    DatePicker,
-    Chart
+    NewSegmentForm,
+    NewTransactionForm,
+    Chart,
   },
   methods: {
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text
-    },
-    addSegment () {
-      this.newSegment = {}
-    },
-    createSegment () {
-      const value = this.newSegment
-      if (!value) {
-        return
-      }
-      this.$http.secured.post('/api/v1/projects/' + this.project.id + '/segments/', { segment: this.newSegment })
-        .then(response => {
-          this.project.segments.push(response.data)
-          this.newSegment = ''
-        })
-        .catch(error => this.setError(error, 'Cannot create project'))
     }
   }
 }
