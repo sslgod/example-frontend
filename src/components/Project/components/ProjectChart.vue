@@ -5,8 +5,7 @@
       <div class="w-full p-3">
         <div class="bg-white border-transparent rounded-lg shadow-lg">
           <div class="p-5">
-               <JSCharting :options="options"></JSCharting>
-              <button v-on:click="updateData">Update Data</button>
+            <JSCharting :options="options"></JSCharting>
           </div>
         </div>
       </div>
@@ -19,12 +18,18 @@ import JSCharting from 'jscharting-vue'
 
 export default {
 
-  name: 'Chart',
+  name: 'ProjectChart',
   data () {
-    console.log()
-    function toPoints (segment, parent) {
+    const series = this.$attrs.project.segments.flatMap(segment => [
+      {
+        name: segment.name,
+        points: toPoints(segment)
+      }
+    ])
+
+    function toPoints(segment, parent) {
       var points = []
-      if (segment.parent_id === undefined) {
+      if (segment.parent_id === null) {
         points = [{
           name: segment.name,
           y: ['2/15/2020', '3/15/2020']
@@ -41,17 +46,9 @@ export default {
       }
       return points
     }
-    var project = this.$attrs.project
-    var segments = project.segments
-    var series = segments.flatMap(segment => [
-      {
-        name: segment.name,
-        points: toPoints(segment)
-      }
-    ])
 
     return {
-      props: ['segments'],
+      project: this.$attrs.project,
       options: {
         debug: true,
         type: 'horizontal column',
@@ -97,9 +94,6 @@ export default {
         series: series
       }
     }
-  },
-  created () {
-    console.log(this.props)
   },
 
   components: {

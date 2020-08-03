@@ -6,13 +6,13 @@
         Название
       </label>
       
-      <input v-model="this.newSegment.name" class="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white" id="grid-first-name" type="text" placeholder="Дизайн">
+      <input v-model="newSegment.name" class="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white" id="grid-first-name" type="text" placeholder="Дизайн">
     </div>
     <div class="w-full md:w-1/6 px-3">
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-        Продолжительность
+        Дата начала
       </label>
-      <date-picker v-model="this.newSegment.started_date" inputClass="w-full appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white" valueType="format"></date-picker>
+      <date-picker v-model="newSegment.started_date" inputClass="w-full appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white" valueType="format"></date-picker>
 
     </div>
     
@@ -20,8 +20,8 @@
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
         Родительский сегмент
       </label>
-      <select v-model="this.newSegment.parent_id" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-        <option  v-for="segment in segments" :key="segment.id" :segment="segment" :value="segment.id">{{ segment.name }}</option>
+      <select v-model="newSegment.parent_id" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+        <option  v-for="segment in project.segments" :key="segment.id" :segment="segment" :value="segment.id">{{ segment.name }}</option>
       </select>
     </div>
 
@@ -37,6 +37,7 @@ export default {
   name: 'NewSegmentForm',
   data () {
     return {
+      project: this.$attrs.project,
       newSegment: {},
       error: ''
     }

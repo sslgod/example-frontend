@@ -23,7 +23,7 @@
               Финансы
           </h2>
           <div  class="pt-2">
-            <NewTransactionForm :project="project"/>
+            <ProjectTransactionForm :project="project" />
           </div>
         </div>
       </div>
@@ -33,12 +33,11 @@
         <div class="flex w-full  flex-col">
           <h2 class="text-2xl text-secondary font-bold mb-1">
             Этапы
-           
           </h2>
           <div  class="pt-2">
-            <NewSegmentForm  />
+            <ProjectSegmentForm :project="project" />
           </div>
-          <Chart :project="project" />
+          <ProjectChart :project="project" />
           <ul class="list-reset mt-4">
             <li  v-for="segment in project.segments" :key="segment.id" :segment="segment">
               <div class="flex items-center justify-between flex-wrap">
@@ -55,9 +54,9 @@
 </div>
 </template>
 <script>
-import Chart from './project/Chart.vue'
-import NewSegmentForm from './project/NewSegmentForm.vue'
-import NewTransactionForm from './project/NewTransactionForm.vue'
+import ProjectChart from './components/ProjectChart.vue'
+import ProjectSegmentForm from './components/ProjectSegmentForm.vue'
+import ProjectTransactionForm from './components/ProjectTransactionForm.vue'
 
 export default {
   name: 'Project',
@@ -79,9 +78,9 @@ export default {
     }
   },
   components: {
-    NewSegmentForm,
-    NewTransactionForm,
-    Chart,
+    ProjectSegmentForm,
+    ProjectTransactionForm,
+    ProjectChart,
   },
   methods: {
     setError (error, text) {
