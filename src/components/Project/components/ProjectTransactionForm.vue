@@ -1,10 +1,9 @@
 <template>
 <form action="" @submit.prevent="createTransaction(newTransaction)">
   <div class="flex flex-wrap  mb-6">
-  
 
     <div class="w-full md:w-1/6  mb-6 md:mb-0 pr-3">
-      
+
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
         Сумма
       </label>
@@ -22,7 +21,7 @@
         <option  v-for="segment in project.segments" :key="segment.id" :segment="segment" :value="segment.id">{{ segment.name }}</option>
       </select>
     </div>
-    
+
     <div class="w-full md:w-1/6 px-3">
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
         Дата
@@ -35,7 +34,7 @@
 </form>
 </template>
 <script>
-import DatePicker from 'vue2-datepicker';
+import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
 
 export default {
@@ -54,12 +53,11 @@ export default {
       error: ''
     }
   },
-  
-  
+
   components: {
     DatePicker
   },
- 
+
   methods: {
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text

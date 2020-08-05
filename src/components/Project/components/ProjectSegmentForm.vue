@@ -5,7 +5,7 @@
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
         Название
       </label>
-      
+
       <input v-model="newSegment.name" class="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white" id="grid-first-name" type="text" placeholder="Дизайн">
     </div>
     <div class="w-full md:w-1/6 px-3">
@@ -15,7 +15,7 @@
       <date-picker v-model="newSegment.started_date" inputClass="w-full appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white" valueType="format"></date-picker>
 
     </div>
-    
+
     <div class="w-full md:w-1/6 px-3">
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
         Родительский сегмент
@@ -30,7 +30,7 @@
 </form>
 </template>
 <script>
-import DatePicker from 'vue2-datepicker';
+import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
 
 export default {
@@ -45,7 +45,7 @@ export default {
   components: {
     DatePicker
   },
- 
+
   methods: {
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text

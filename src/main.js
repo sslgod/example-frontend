@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import VueAxios from 'vue-axios'
 import VueMoment from 'vue-moment'
-import VueCurrencyInput from "vue-currency-input";
+import VueCurrencyInput from 'vue-currency-input'
 
 import moment from 'moment-timezone'
 import { securedAxiosInstance, plainAxiosInstance } from './backend/axios'

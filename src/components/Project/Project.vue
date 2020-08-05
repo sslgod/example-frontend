@@ -72,7 +72,7 @@ export default {
     } else {
       this.$http.secured.get('/api/v1/projects/' + this.$route.params.id)
         .then(response => {
-           this.project = response.data
+          this.project = response.data
         })
         .catch(error => this.setError(error, 'Something went wrong'))
     }
@@ -80,7 +80,7 @@ export default {
   components: {
     ProjectSegmentForm,
     ProjectTransactionForm,
-    ProjectChart,
+    ProjectChart
   },
   methods: {
     setError (error, text) {

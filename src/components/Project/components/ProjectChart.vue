@@ -27,7 +27,7 @@ export default {
       }
     ])
 
-    function toPoints(segment, parent) {
+    function toPoints (segment, parent) {
       var points = []
       if (segment.parent_id === null) {
         points = [{
