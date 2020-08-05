@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Signin from '@/components/Signin'
 import Signup from '@/components/Signup'
-import Projects from '@/components/projects/Projects.vue'
-import Project from '@/components/project/Project.vue'
+import Projects from '@/components/Projects/Projects.vue'
+import Project from '@/components/Project/Project.vue'
 
 Vue.use(Router)
 
