@@ -15,6 +15,13 @@
       <date-picker v-model="newSegment.started_date" inputClass="w-full appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white" valueType="format"></date-picker>
 
     </div>
+    <div class="w-full md:w-1/6 px-3">
+      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+        Продолжительность
+      </label>
+      <input v-model="newSegment.days_duration" class="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white" id="grid-first-name" type="text" placeholder="В днях">
+
+    </div>
 
     <div class="w-full md:w-1/6 px-3">
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
@@ -49,6 +56,20 @@ export default {
   methods: {
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text
+    },
+
+    createSegment () {
+      const value = this.newSegment
+      if (!value) {
+        return
+      }
+      this.$http.secured.post('/api/v1/projects/' + this.project.id + '/segments/', { segment: value })
+
+        .then(response => {
+          this.project.segments.push(response.data)
+          this.newSegment = ''
+        })
+        .catch(error => this.setError(error, 'Cannot create project'))
     }
   }
 }

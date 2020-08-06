@@ -8,9 +8,9 @@
         Сумма
       </label>
       <div class="flex flex-wrap">
-        <b class='md:w-1/6 py-2 px-3'>{{typeIcons[newTransaction.type]}}</b>
+        <b  v-on:click="newTransaction.transaction_type = Object.keys(typeIcons).find(function(o){return o!=newTransaction.transaction_type })" class='transaction_type md:w-1/6 py-2 px-3'>{{typeIcons[newTransaction.transaction_type]}}</b>
         <currency-input v-model="newTransaction.amount" class="appearance-none block md:w-5/6 bg-gray-200 text-gray-700 rounded py-3 pl-4 pr-5  mb-3 leading-tight  focus:bg-white" />
-        <input type='hidden' v-model="newTransaction.type" />
+        <input type='hidden' v-model="newTransaction.transaction_type" />
       </div>
     </div>
     <div class="w-full md:w-1/6 px-3">
@@ -26,7 +26,14 @@
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
         Дата
       </label>
-      <date-picker v-model="newTransaction.started_date" inputClass="w-full appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white" valueType="format"></date-picker>
+      <date-picker v-model="newTransaction.date" inputClass="w-full appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white" valueType="format"></date-picker>
+    </div>
+    <div class="w-full md:w-1/6 px-3">
+      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+        Комментарий
+      </label>
+      <input v-model="newTransaction.comment" class="appearance-none block w-full bg-gray-200 text-gray-700 rounded py-3 px-4 mb-3 leading-tight  focus:bg-white" id="grid-first-name" type="text" placeholder="Описание">
+
     </div>
 
     <input type="submit" value="Добавить" class=" mb-3 mt-6 bg-transparent text-sm hover:bg-blue hover:text-white hover:bg-gray-700 text-blue border border-blue no-underline font-bold px-4 rounded cursor-pointer">
@@ -43,7 +50,7 @@ export default {
     return {
       props: ['segments'],
       newTransaction: {
-        type: 'in'
+        transaction_type: 'in'
       },
       project: this.$attrs.project,
       typeIcons: {
@@ -61,7 +68,26 @@ export default {
   methods: {
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text
+    },
+
+    createTransaction () {
+      const value = this.newTransaction
+      if (!value) {
+        return
+      }
+      this.$http.secured.post('/api/v1/projects/' + this.project.id + '/transactions/', { transaction: value })
+
+        .then(response => {
+          this.project.transactions.push(response.data)
+          this.newTransaction = {transaction_type: 'in'}
+        })
+        .catch(error => this.setError(error, 'Cannot create transaction'))
     }
   }
 }
 </script>
+<style>
+.transaction_type{
+  cursor: pointer;
+}
+</style>

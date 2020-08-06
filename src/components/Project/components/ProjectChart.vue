@@ -15,42 +15,17 @@
 </template>
 <script>
 import JSCharting from 'jscharting-vue'
+import moment from 'moment-timezone'
 
 export default {
 
   name: 'ProjectChart',
   data () {
-    const series = this.$attrs.project.segments.flatMap(segment => [
-      {
-        name: segment.name,
-        points: toPoints(segment)
-      }
-    ])
-
-    function toPoints (segment, parent) {
-      var points = []
-      if (segment.parent_id === null) {
-        points = [{
-          name: segment.name,
-          y: ['2/15/2020', '3/15/2020']
-        }]
-      } else {
-        points = [{
-          name: parent.name,
-          y: ['2/25/2020', '2/26/2020']
-        }]
-      }
-
-      if (segment.children) {
-        points.concat([ segment.children.flatMap(s => [ toPoints(s) ]) ])
-      }
-      return points
-    }
-
     return {
       project: this.$attrs.project,
+
       options: {
-        debug: true,
+        debug: false,
         type: 'horizontal column',
         zAxisScaleType: 'stacked',
         yAxis_scale_type: 'time',
@@ -58,18 +33,12 @@ export default {
         title_label_text:
           'Project Beta from %min to %max',
         yAxis: {
-          markers: [
+          markers: this.$attrs.project.transactions.flatMap(transaction => [
             {
-              value: '4/20/2020',
-              color: '#b0be5f',
-              label_text: 'Meeting'
-            },
-            {
-              value: ['3/1/2020', '3/30/2020'],
-              color: ['orange', 0.5],
-              label_text: 'Vacation'
+              value: moment(new Date(transaction.date)).format('l'),
+              label_text: transaction.transaction_type + ' ' + transaction.amount
             }
-          ]
+          ])
         },
         defaultSeries: {
           defaultPoint: {
@@ -91,13 +60,43 @@ export default {
             outline: { color: 'darkenMore', width: 3 }
           }
         },
-        series: series
+        series: []
       }
     }
   },
 
+  created () {
+    function toPoints (segment, parent) {
+      var points = []
+      if (segment.parent_id === null) {
+        console.log(moment(Date(segment.started_date)).format('l'))
+        points = [{
+          name: segment.name,
+          y: [moment(new Date(segment.started_date)).format('l'), moment(new Date(segment.due_date)).format('l')]
+        }]
+      } else {
+        points = [{
+          name: parent.name,
+          y: [moment(new Date(parent.started_date)).format('l'), moment(new Date(parent.due_date)).format('l')]
+        }]
+      }
+
+      if (segment.children) {
+        points.concat([ segment.children.flatMap(s => [ toPoints(s) ]) ])
+      }
+      return points
+    }
+
+    this.options.series = this.project.segments.flatMap(segment => [
+      {
+        name: segment.name,
+        points: toPoints(segment)
+      }
+    ])
+  },
   components: {
-    JSCharting
+    JSCharting,
+    moment
   }
 }
 </script>
