@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:3000'
+const API_URL = 'http://45.90.32.30/api'
 
 const securedAxiosInstance = axios.create({
   baseURL: API_URL,
@@ -16,7 +16,7 @@ const plainAxiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json'
   }
-})
+})ProjectSegmentForm.vue: 48
 
 securedAxiosInstance.interceptors.request.use((config) => {
   const method = config.method.toUpperCase()
