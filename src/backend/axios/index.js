@@ -16,7 +16,7 @@ const plainAxiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json'
   }
-})ProjectSegmentForm.vue: 48
+})
 
 securedAxiosInstance.interceptors.request.use((config) => {
   const method = config.method.toUpperCase()
